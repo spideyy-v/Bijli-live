@@ -84,7 +84,7 @@ border-color: rgba(0, 0, 0, 0.5);
 #popup {
   display: none;
   position: fixed;
-  top: 0; left: 0;
+  top: 0; left: 5%;
   width: 90%;
   height: 90%;
   background-color: rgba(0, 0, 0, 0);
