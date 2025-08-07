@@ -213,28 +213,39 @@
 
     // ✅ Fix: expose postComment globally
     window.postComment = function () {
-      const commentBox = document.getElementById("commentInput");
-      const commentText = commentBox.value.trim();
-      if (!commentText) {
-        alert("कृपया कोई टिप्पणी लिखें!");
-        return;
-      }
+  const commentBox = document.getElementById("commentInput");
+  const commentText = commentBox.value.trim();
 
-      const commentRef = ref(db, "electricity/comment");
+  const feederSelect = document.getElementById("feederSelect");
+  const selectedFeeders = Array.from(feederSelect.selectedOptions).map(opt => opt.value);
 
-      set(commentRef, {
-        text: commentText,
-        time: new Date().toLocaleString("hi-IN", {
-          dateStyle: "medium",
-          timeStyle: "short"
-        })
-      }).then(() => {
-        alert("✅ स्टेटस सफलतापूर्वक अपडेट की गई!");
-        commentBox.value = "";
-      }).catch(err => {
-        alert("Error: " + err.message);
-      });
-    };
+  if (!commentText) {
+    alert("कृपया कोई टिप्पणी लिखें!");
+    return;
+  }
+
+  if (selectedFeeders.length === 0) {
+    alert("कृपया कम से कम एक फीडर चुनें!");
+    return;
+  }
+
+  const commentRef = ref(db, "electricity/comment");
+
+  set(commentRef, {
+    text: commentText,
+    time: new Date().toLocaleString("hi-IN", {
+      dateStyle: "medium",
+      timeStyle: "short"
+    }),
+    feeders: selectedFeeders
+  }).then(() => {
+    alert("✅ स्टेटस सफलतापूर्वक अपडेट की गई!");
+    commentBox.value = "";
+    feederSelect.selectedIndex = -1;
+  }).catch(err => {
+    alert("Error: " + err.message);
+  });
+};
   </script>
 </body>
 </html>
