@@ -85,8 +85,8 @@ border-color: rgba(0, 0, 0, 0.5);
   display: none;
   position: fixed;
   top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 90%;
+  height: 90%;
   background-color: rgba(0, 0, 0, 0);
   justify-content: center;
   align-items: center;
@@ -121,7 +121,7 @@ backdrop-filter: blur(10px);
 
 .close-btn {
 position: absolute;
-margin-left: 80%;
+margin-left: 70%;
   padding: 10px 10px;
   background-color: #ffffff10;
   color: #fff;
