@@ -127,7 +127,7 @@ justify-content: center;
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // ✅ Login Success
-          window.location.href = "index.html";
+          window.location.href = "dashboard.html";
         })
         .catch((error) => {
           msg.innerText = "❌ " + error.message;
