@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>Bijli Live - Status</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="icon.png">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url("https://thumbs.dreamstime.com/b/electricity-scene-power-pylons-conducting-electrical-power-sunset-50590843.jpg") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      border-radius: 16px;
+      padding: 30px;
+      width: 90%;
+      max-width: 450px;
+      text-align: center;
+      color: white;
+      overflow-y: auto;
+      max-height: 95vh;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    #currentStatus {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #ffd700;
+    }
+
+    #lastUpdated {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .comment-section {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .comment-section h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 5px;
+    }
+
+    .comment {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .comment-time {
+      font-size: 12px;
+      color: #bbb;
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 22px;
+      }
+      #currentStatus {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔌 बिजली की स्थिति</h2>
+    <div id="currentStatus">⏳ लोड हो रहा है...</div>
+    <div id="lastUpdated">✨ अंतिम अपडेट: ---</div>
+
+    <div class="comment-section">
+      <h3>💬 टिप्पणी</h3>
+      <div id="commentList">⏳ लोड हो रहा है...</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCFbwTesx_LvUevJsO6VSUGbKUOmOfVLUA",
+      authDomain: "search-page-59af4.firebaseapp.com",
+      databaseURL: "https://search-page-59af4-default-rtdb.firebaseio.com",
+      projectId: "search-page-59af4",
+      storageBucket: "search-page-59af4.appspot.com",
+      messagingSenderId: "627269108316",
+      appId: "1:627269108316:web:80c57390d850fda15a9c99"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // STATUS
+    const statusRef = ref(db, "electricity/status");
+    const timeRef = ref(db, "electricity/lastUpdated");
+    const currentStatusEl = document.getElementById("currentStatus");
+    const lastUpdatedEl = document.getElementById("lastUpdated");
+
+    onValue(statusRef, (snapshot) => {
+      currentStatusEl.textContent = snapshot.val() || "🚫 कोई जानकारी नहीं!";
+    });
+
+    onValue(timeRef, (snapshot) => {
+      const time = snapshot.val();
+      lastUpdatedEl.textContent = "✨ अंतिम अपडेट: " + (time || "---");
+    });
+
+    // SINGLE LIVE COMMENT
+    const commentList = document.getElementById("commentList");
+    const singleCommentRef = ref(db, "electricity/comment");
+    onValue(singleCommentRef, (snapshot) => {
+      const comment = snapshot.val();
+      commentList.innerHTML = "";
+      if (comment) {
+        const div = document.createElement("div");
+        div.className = "comment";
+        div.innerHTML = `
+          <div>${comment.text}</div>
+          <div class="comment-time">${comment.time}</div>
+        `;
+        commentList.appendChild(div);
+      } else {
+        commentList.textContent = "🚫 कोई टिप्पणी नहीं मिली।";
+      }
+    });
+  </script>
+</body>
+</html>
