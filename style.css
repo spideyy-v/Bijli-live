@@ -100,7 +100,7 @@ body {
 #popup {
   display: none;
   position: fixed;
-  top: 0; left: 5%;
+  top: 5%; left: 5%;
   width: 90%;
   height: 90%;
   background-color: rgba(0, 0, 0, 0);
@@ -135,7 +135,7 @@ body {
       margin: 8px 0;
     }
 
-.popup-content.popupAvatar {
+.popup-content .popupAvatar {
       Border-radius: 15px;
       border-width: 5px;
       border-color: #fff;
