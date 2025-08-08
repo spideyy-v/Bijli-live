@@ -127,7 +127,7 @@
       if (hour < 19) return "Good Evening";
       return "Good Night";
     }
-alert("All Good...");
+
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const email = user.email;
@@ -137,6 +137,7 @@ alert("All Good...");
         if (mobile === "7068513531") avatarImg = "ashok.png";
         else if (mobile === "7376000596") avatarImg = "viru.png";
         document.querySelector('.avatar').src = avatarImg;
+        alert("All Good...");
         document.querySelector('.popupAvatar').src = avatarImg;
         alert("All Good...");
         // Popup avatar
