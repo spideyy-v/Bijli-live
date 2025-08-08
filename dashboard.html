@@ -137,9 +137,9 @@
         if (mobile === "7068513531") avatarImg = "ashok.png";
         else if (mobile === "7376000596") avatarImg = "viru.png";
         document.querySelector('.avatar').src = avatarImg;
+        document.querySelector('.popupAvatar').src = avatarImg;
         alert("All Good...");
         // Popup avatar
-        document.getElementById('popupAvatar').src = avatarImg;
 
         const userRef = ref(db, `users/${mobile}`);
         try {
@@ -158,10 +158,7 @@
             document.getElementById("greeting").textContent = `${getGreeting()}, ${fullName}!`;
 
             document.getElementById("userData").innerHTML = `
-            <div class="avaImg">
-              <img src="" id="popupAvatar" alt="Profile">
-            </div>
-            <div class="text">
+              <img src="default.png" class="popupAvatar" alt="Profile">
               <p><strong>Circle:</strong> Azamgarh</p>
               <p><strong>Sub-Divison:</strong> Nagra</p>
               <p><strong>Sub-station:</strong> Jam</p>
@@ -170,7 +167,6 @@
               <p><strong>Mobile No:</strong> ${mobile}</p>
               <p><strong>PIN:</strong> ${pin}</p>
               <p><strong>Password:</strong> ${password}</p>
-            </div>
             `;
           } else {
             document.getElementById("userData").textContent = "No user data found.";
