@@ -155,6 +155,10 @@
             document.getElementById("greeting").textContent = `${getGreeting()}, ${fullName}!`;
 
             document.getElementById("userData").innerHTML = `
+            <div class="avaImg">
+              <img src="" id="avatarImg" alt="Profile">
+            </div>
+            <div class="text">
               <p><strong>Circle:</strong> Azamgarh</p>
               <p><strong>Sub-Divison:</strong> Nagra</p>
               <p><strong>Sub-station:</strong> Jam</p>
@@ -163,6 +167,7 @@
               <p><strong>Mobile No:</strong> ${mobile}</p>
               <p><strong>PIN:</strong> ${pin}</p>
               <p><strong>Password:</strong> ${password}</p>
+            </div>
             `;
           } else {
             document.getElementById("userData").textContent = "No user data found.";
