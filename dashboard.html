@@ -17,15 +17,10 @@
     <div class="greeting" id="greeting">Good Day, Sir!</div>
     <div class="containerB">
       <h2>👇 कृपया किसी एक फीडर का चयन करें!</h2>
-      <button onclick="loadSite('https://bijli-live.vercel.app/f1.html')">जाम</button>
-  <button onclick="loadSite('https://bijli-live.vercel.app/f2.html')">गोपालपुर</button>
-  <button onclick="loadSite('https://bijli-live.vercel.app/f3.html')">सिंगही</button>
-  <button onclick="loadSite('https://bijli-live.vercel.app/f4.html')">सलेमपुर</button>
-  <div>
-    <iframe id="siteFrame" src=""></iframe>
-  </div>
-      
-  
+      <button onclick="btnF1()">जाम</button>
+      <button onclick="btnF2()">गोपालपुर</button>
+      <button onclick="btnF3()">सिंगही</button>
+      <button onclick="btnF4()">सलेमपुर</button>
     </div>
   </div>
 
@@ -41,15 +36,22 @@
   </div>
 
   <script>
-    //i frame loader
-        function loadSite(url) {
-      document.getElementById('siteFrame').src = url;
+    //site loader for status
+    function btnF1() {
+              window.location.href = "https://bijli-live.vercel.app/f1.html";
+            }
+
+    function btnF2() {
+              window.location.href = "https://bijli-live.vercel.app/f2.html";
     }
-    
-    // Set default site when page loads
-    window.onload = function() {
-      loadSite('https://bijli-live.vercel.app/default.html');
-    };
+
+    function btnF3() {
+              window.location.href = "https://bijli-live.vercel.app/f3.html";
+    }
+
+    function btnF4() {
+              window.location.href = "https://bijli-live.vercel.app/f4.html";
+    }
 
 
     //popup loader
