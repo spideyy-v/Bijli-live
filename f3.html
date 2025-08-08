@@ -1,0 +1,186 @@
+<!--Here is my code-->
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
+  <title>सिंगही फीडर</title>  
+  <link rel="icon" href="icon.png" type="image/png"> 
+<style>
+body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url("https://thumbs.dreamstime.com/b/electricity-scene-power-pylons-conducting-electrical-power-sunset-50590843.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+   
+ .containerB {
+      background: rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      border-radius: 16px;
+      padding: 30px;
+      width: 90%;
+      max-width: 450px;
+      text-align: center;
+      color: white;
+      overflow-y: auto;
+      max-height: 95vh;
+    }
+
+   .containerB h2 {
+      margin-bottom: 20px;
+    }
+
+   .containerB select {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+   .containerB select, .containerB textarea {
+      background: rgba(0, 0, 0, 0.1);
+      color: #fff;
+    }
+
+.containerB textarea {
+width: 94%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+}
+
+.containerB textarea::placeholder {color: rgba(255, 255, 255, 0.5);}
+
+   .containerB button {
+width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+margin-top: 10px;
+      padding: 12px;
+border-radius: 10px;
+border-width: 1px;
+border-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      cursor: pointer;
+    }
+
+   .containerB button:hover {
+      background: #0056b3;
+    }
+
+   .containerB .timestamp {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    @media (max-width: 480px) {
+     .containerB h2 {
+        font-size: 22px;
+      }
+     .containerB select, textarea, button {
+        font-size: 15px;
+      }
+    }
+
+</style>
+</head>  
+<body>  
+  <div class="containerB">  
+<h1>सिंगही फीडर</h1>
+      <h2>⚡ बिजली की वर्तमान स्थिति अपडेट करें!</h2>  
+      <select id="status">  
+        <option value="">---बिजली की स्थिति चुनें---</option>  
+        <option value="ट्रिप हुआ है">ट्रिप हुआ है</option>  
+        <option value="मेन सप्लाई बंद है">मेन सप्लाई बंद है</option>  
+        <option value="ब्रेकडाउन/खराब है">ब्रेकडाउन/खराब है</option>  
+        <option value="लाइट चल रही है">लाइट चल रही है</option>  
+        <option value="अन्य (👇 कृपया विवरण नीचे देखें)">अन्य (👇 कृपया विवरण नीचे लिखें)</option>  
+      </select>  
+  
+      <textarea id="commentInput" rows="4" placeholder="💬 यहां अपना कमेंट लिखें..."></textarea>  
+      <button onclick="postComment()">✅ स्टेटस अपडेट करें!</button>  
+  
+      <div class="timestamp" id="lastUpdatedText">✨ अंतिम अपडेट: ---</div>  
+    </div>  
+  <script type="module">  
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";  
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";  
+    import { getDatabase, ref, get, set, onValue } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";  
+  
+    const firebaseConfig = {
+    apiKey: "AIzaSyCFbwTesx_LvUevJsO6VSUGbKUOmOfVLUA",
+    authDomain: "search-page-59af4.firebaseapp.com",
+    databaseURL: "https://search-page-59af4-default-rtdb.firebaseio.com",
+    projectId: "search-page-59af4",
+    storageBucket: "search-page-59af4.firebasestorage.app",
+    messagingSenderId: "627269108316",
+    appId: "1:627269108316:web:80c57390d850fda15a9c99",
+    measurementId: "G-K91XW4NBP7"
+  };  
+  
+    const app = initializeApp(firebaseConfig);  
+    const auth = getAuth(app);  
+    const db = getDatabase(app);  
+  
+    const statusRef = ref(db, "electricity/status");  
+    const timeRef = ref(db, "electricity/lastUpdated");  
+  
+    const statusSelect = document.getElementById("status");  
+    const lastUpdatedText = document.getElementById("lastUpdatedText");  
+  
+    statusSelect.addEventListener("change", () => {  
+      const status = statusSelect.value;  
+      if (status) {  
+        const now = new Date().toLocaleString("hi-IN", {  
+          dateStyle: "medium",  
+          timeStyle: "short"  
+        });  
+        set(statusRef, status);  
+        set(timeRef, now);  
+      }  
+    });  
+  
+    onValue(timeRef, (snapshot) => {  
+      const time = snapshot.val();  
+      lastUpdatedText.textContent = "✨ अंतिम अपडेट: " + (time || "---");  
+    });  
+  
+    // тЬЕ Fix: expose postComment globally  
+    window.postComment = function () {  
+      const commentBox = document.getElementById("commentInput");  
+      const commentText = commentBox.value.trim();  
+      if (!commentText) {  
+        alert("कृपया कोई टिप्पणी लिखें!");  
+        return;  
+      }  
+  
+      const commentRef = ref(db, "electricity/comment");  
+  
+      set(commentRef, {  
+        text: commentText,  
+        time: new Date().toLocaleString("hi-IN", {  
+          dateStyle: "medium",  
+          timeStyle: "short"  
+        })  
+      }).then(() => {  
+        alert("✅ स्टेटस सफलतापूर्वक अपडेट हो गया है!");  
+        commentBox.value = "";  
+      }).catch(err => {  
+        alert("Error: " + err.message);  
+      });  
+    };  
+  </script>  
+</body>  
+</html>
