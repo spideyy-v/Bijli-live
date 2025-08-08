@@ -218,6 +218,14 @@ border-color: rgba(0, 0, 0, 0.5);
       color: #ddd;
     }
 
+footer p {
+      font-family: 'Jua';
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffffff10;
+}
+
+
     @media (max-width: 480px) {
      .containerB h2 {
         font-size: 22px;
@@ -236,4 +244,5 @@ border-color: rgba(0, 0, 0, 0.5);
         font-size: 1.5em;
       }
     }
+
    
