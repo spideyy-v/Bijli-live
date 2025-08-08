@@ -15,31 +15,6 @@
 
   <div class="container">
     <div class="greeting" id="greeting">Good Day, Sir!</div>
-    <div class="containerB">
-      <h2>⚡ बिजली की वर्तमान स्थिति अपडेट करें!</h2>
-      <!-- Feeder Selection -->
-  <label for="feederSelect">Select Feeder (Multiple):</label><br>
-  <select id="feederSelect" multiple size="4">
-    <option value="Jam">Jam</option>
-    <option value="Gopalpur">Gopalpur</option>
-    <option value="Singahi">Singahi</option>
-    <option value="Salempur">Salempur</option>
-  </select><br><br>
-
-      <select id="status">
-        <option value="">---बिजली की स्थिति चुनें---</option>
-        <option value="ट्रिप हुआ है">ट्रिप हुआ है</option>
-        <option value="मेन सप्लाई बंद है">मेन सप्लाई बंद है</option>
-        <option value="ब्रेकडाउन/खराब है">ब्रेकडाउन/खराब है</option>
-        <option value="लाइट चल रही है">लाइट चल रही है</option>
-        <option value="अन्य (कृपया विवरण नीचे पढ़े!)">अन्य (कृपया विवरण नीचे लिखें)</option>
-      </select>
-
-      <textarea id="commentInput" rows="4" placeholder="💬 यहां अपना कमेंट लिखें..."></textarea>
-      <button onclick="postComment()">✅ स्टेटस अपडेट करें</button>
-
-      <div class="timestamp" id="lastUpdatedText">✨ अंतिम अपडेट: ---</div>
-    </div>
   </div>
 
   <!-- POPUP HTML -->
@@ -180,72 +155,12 @@
 
     document.getElementById("logoutBtn").onclick = function () {
       signOut(auth).then(() => {
-        alert("🔒 Logged Out, Successfully!");
+        alert("ðŸ”’ Logged Out, Successfully!");
         window.location.href = "index.html";
       }).catch((error) => {
         alert("Logout Error: " + error.message);
       });
     };
-
-    //status of electricity ⚡⚡
-    const statusRef = ref(db, "electricity/status");
-    const timeRef = ref(db, "electricity/lastUpdated");
-
-    const statusSelect = document.getElementById("status");
-    const lastUpdatedText = document.getElementById("lastUpdatedText");
-
-    statusSelect.addEventListener("change", () => {
-      const status = statusSelect.value;
-      if (status) {
-        const now = new Date().toLocaleString("hi-IN", {
-          dateStyle: "medium",
-          timeStyle: "short"
-        });
-        set(statusRef, status);
-        set(timeRef, now);
-      }
-    });
-
-    onValue(timeRef, (snapshot) => {
-      const time = snapshot.val();
-      lastUpdatedText.textContent = "✨ अंतिम अपडेट: " + (time || "---");
-    });
-
-    // ✅ Fix: expose postComment globally
-    window.postComment = function () {
-  const commentBox = document.getElementById("commentInput");
-  const commentText = commentBox.value.trim();
-
-  const feederSelect = document.getElementById("feederSelect");
-  const selectedFeeders = Array.from(feederSelect.selectedOptions).map(opt => opt.value);
-
-  if (!commentText) {
-    alert("कृपया कोई टिप्पणी लिखें!");
-    return;
-  }
-
-  if (selectedFeeders.length === 0) {
-    alert("कृपया कम से कम एक फीडर चुनें!");
-    return;
-  }
-
-  const commentRef = ref(db, "electricity/comment");
-
-  set(commentRef, {
-    text: commentText,
-    time: new Date().toLocaleString("hi-IN", {
-      dateStyle: "medium",
-      timeStyle: "short"
-    }),
-    feeders: selectedFeeders
-  }).then(() => {
-    alert("✅ स्टेटस सफलतापूर्वक अपडेट की गई!");
-    commentBox.value = "";
-    feederSelect.selectedIndex = -1;
-  }).catch(err => {
-    alert("Error: " + err.message);
-  });
-};
   </script>
 </body>
 </html>
