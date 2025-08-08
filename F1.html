@@ -1,0 +1,180 @@
+<!--Here is my code-->
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
+  <title>Dashboard</title>  
+  <link rel="icon" href="icon.png" type="image/png"> 
+<style>
+body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url("https://thumbs.dreamstime.com/b/electricity-scene-power-pylons-conducting-electrical-power-sunset-50590843.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+   
+ .containerB {
+      background: rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      border-radius: 16px;
+      padding: 30px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      color: white;
+    }
+
+   .containerB h2 {
+      margin-bottom: 20px;
+    }
+
+   .containerB select {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+   .containerB select, .containerB textarea {
+      background: rgba(0, 0, 0, 0.1);
+      color: #fff;
+    }
+
+.containerB textarea {
+width: 94%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+}
+
+.containerB textarea::placeholder {color: rgba(255, 255, 255, 0.5);}
+
+   .containerB button {
+width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+margin-top: 10px;
+      padding: 12px;
+border-radius: 10px;
+border-width: 1px;
+border-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      cursor: pointer;
+    }
+
+   .containerB button:hover {
+      background: #0056b3;
+    }
+
+   .containerB .timestamp {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    @media (max-width: 480px) {
+     .containerB h2 {
+        font-size: 22px;
+      }
+     .containerB select, textarea, button {
+        font-size: 15px;
+      }
+    }
+
+</style>
+</head>  
+<body>  
+  <div class="containerB">  
+<h1>जाम फीडर</h1>
+      <h2>тЪб рдмрд┐рдЬрд▓реА рдХреА рд╡рд░реНрддрдорд╛рди рд╕реНрдерд┐рддрд┐ рдЕрдкрдбреЗрдЯ рдХрд░реЗрдВ!</h2>  
+      <select id="status">  
+        <option value="">---рдмрд┐рдЬрд▓реА рдХреА рд╕реНрдерд┐рддрд┐ рдЪреБрдиреЗрдВ---</option>  
+        <option value="рдЯреНрд░рд┐рдк рд╣реБрдЖ рд╣реИ">рдЯреНрд░рд┐рдк рд╣реБрдЖ рд╣реИ</option>  
+        <option value="рдореЗрди рд╕рдкреНрд▓рд╛рдИ рдмрдВрдж рд╣реИ">рдореЗрди рд╕рдкреНрд▓рд╛рдИ рдмрдВрдж рд╣реИ</option>  
+        <option value="рдмреНрд░реЗрдХрдбрд╛рдЙрди/рдЦрд░рд╛рдм рд╣реИ">рдмреНрд░реЗрдХрдбрд╛рдЙрди/рдЦрд░рд╛рдм рд╣реИ</option>  
+        <option value="рд▓рд╛рдЗрдЯ рдЪрд▓ рд░рд╣реА рд╣реИ">рд▓рд╛рдЗрдЯ рдЪрд▓ рд░рд╣реА рд╣реИ</option>  
+        <option value="рдЕрдиреНрдп (ЁЯСЗ рдХреГрдкрдпрд╛ рд╡рд┐рд╡рд░рдг рдиреАрдЪреЗ рджреЗрдЦреЗрдВ!)">рдЕрдиреНрдп (ЁЯСЗ рдХреГрдкрдпрд╛ рд╡рд┐рд╡рд░рдг рдиреАрдЪреЗ рд▓рд┐рдЦреЗрдВ)</option>  
+      </select>  
+  
+      <textarea id="commentInput" rows="4" placeholder="ЁЯТм рдпрд╣рд╛рдВ рдЕрдкрдирд╛ рдХрдореЗрдВрдЯ рд▓рд┐рдЦреЗрдВ..."></textarea>  
+      <button onclick="postComment()">тЬЕ рд╕реНрдЯреЗрдЯрд╕ рдЕрдкрдбреЗрдЯ рдХрд░реЗрдВ</button>  
+  
+      <div class="timestamp" id="lastUpdatedText">тЬи рдЕрдВрддрд┐рдо рдЕрдкрдбреЗрдЯ: ---</div>  
+    </div>  
+  <script type="module">  
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";  
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";  
+    import { getDatabase, ref, get, set, onValue } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";  
+  
+    const firebaseConfig = {  
+      apiKey: "AIzaSyAEsOOvrCEUt_1WKtASJvYrQQbHZDQjo_s",  
+      authDomain: "login-bijli.firebaseapp.com",  
+      databaseURL: "https://login-bijli-default-rtdb.firebaseio.com",  
+      projectId: "login-bijli",  
+      storageBucket: "login-bijli.appspot.com",  
+      messagingSenderId: "956625759809",  
+      appId: "1:956625759809:web:82d20e1a9c81b136d020c0",  
+      measurementId: "G-LQ8WLHDSZZ"  
+    };  
+  
+    const app = initializeApp(firebaseConfig);  
+    const auth = getAuth(app);  
+    const db = getDatabase(app);  
+  
+    const statusRef = ref(db, "electricity/status");  
+    const timeRef = ref(db, "electricity/lastUpdated");  
+  
+    const statusSelect = document.getElementById("status");  
+    const lastUpdatedText = document.getElementById("lastUpdatedText");  
+  
+    statusSelect.addEventListener("change", () => {  
+      const status = statusSelect.value;  
+      if (status) {  
+        const now = new Date().toLocaleString("hi-IN", {  
+          dateStyle: "medium",  
+          timeStyle: "short"  
+        });  
+        set(statusRef, status);  
+        set(timeRef, now);  
+      }  
+    });  
+  
+    onValue(timeRef, (snapshot) => {  
+      const time = snapshot.val();  
+      lastUpdatedText.textContent = "тЬи рдЕрдВрддрд┐рдо рдЕрдкрдбреЗрдЯ: " + (time || "---");  
+    });  
+  
+    // тЬЕ Fix: expose postComment globally  
+    window.postComment = function () {  
+      const commentBox = document.getElementById("commentInput");  
+      const commentText = commentBox.value.trim();  
+      if (!commentText) {  
+        alert("рдХреГрдкрдпрд╛ рдХреЛрдИ рдЯрд┐рдкреНрдкрдгреА рд▓рд┐рдЦреЗрдВ!");  
+        return;  
+      }  
+  
+      const commentRef = ref(db, "electricity/comment");  
+  
+      set(commentRef, {  
+        text: commentText,  
+        time: new Date().toLocaleString("hi-IN", {  
+          dateStyle: "medium",  
+          timeStyle: "short"  
+        })  
+      }).then(() => {  
+        alert("тЬЕ рд╕реНрдЯреЗрдЯрд╕ рд╕рдлрд▓рддрд╛рдкреВрд░реНрд╡рдХ рдЕрдкрдбреЗрдЯ рдХреА рдЧрдИ!");  
+        commentBox.value = "";  
+      }).catch(err => {  
+        alert("Error: " + err.message);  
+      });  
+    };  
+  </script>  
+</body>  
+</html>
