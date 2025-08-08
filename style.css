@@ -135,6 +135,12 @@ body {
       margin: 8px 0;
     }
 
+.popup-content.popupAvatar {
+      Border-radius: 15px;
+      border-width: 5px;
+      border-color: #fff;
+}
+
 .close-btn {
 position: absolute;
 margin-left: 70%;
