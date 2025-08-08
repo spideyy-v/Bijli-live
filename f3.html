@@ -111,6 +111,7 @@ border-color: rgba(0, 0, 0, 0.5);
   
       <textarea id="commentInput" rows="4" placeholder="💬 यहां अपना कमेंट लिखें..."></textarea>  
       <button onclick="postComment()">✅ स्टेटस अपडेट करें!</button>  
+      <button onclick="backBtn()">👈 वापस जाएं!</button>
   
       <div class="timestamp" id="lastUpdatedText">✨ अंतिम अपडेट: ---</div>  
     </div>  
@@ -176,11 +177,16 @@ border-color: rgba(0, 0, 0, 0.5);
         })  
       }).then(() => {  
         alert("✅ स्टेटस सफलतापूर्वक अपडेट हो गया है!");  
+        window.location.href = "https://bijli-live.vercel.app/dashboard.html";
         commentBox.value = "";  
       }).catch(err => {  
         alert("Error: " + err.message);  
       });  
     };  
+
+    function backBtn() {
+  window.location.href = "https://bijli-live.vercel.app/dashboard.html";
+    }
   </script>  
 </body>  
 </html>
