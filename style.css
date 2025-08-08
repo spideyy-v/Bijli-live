@@ -7,6 +7,14 @@ body {
       color: #fff;
     }
 
+    iframe {
+      width: 80%;
+      height: 500px;
+      margin-top: 20px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+    }
+
     #nav {
       display: flex;
       justify-content: space-between;
