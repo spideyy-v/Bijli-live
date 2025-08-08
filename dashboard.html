@@ -136,7 +136,12 @@
         let avatarImg = "default.png";
         if (mobile === "7068513531") avatarImg = "ashok.png";
         else if (mobile === "7376000596") avatarImg = "viru.png";
-        document.querySelector('.avatar').src = avatarImg;
+
+        // Navbar avatar
+        document.getElementById('navAvatar').src = avatarImg;
+
+        // Popup avatar
+        document.getElementById('popupAvatar').src = avatarImg;
 
         const userRef = ref(db, `users/${mobile}`);
         try {
@@ -156,7 +161,7 @@
 
             document.getElementById("userData").innerHTML = `
             <div class="avaImg">
-              <img src="" id="avatarImg" alt="Profile">
+              <img src="" id="popupAvatar" alt="Profile">
             </div>
             <div class="text">
               <p><strong>Circle:</strong> Azamgarh</p>
