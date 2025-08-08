@@ -42,7 +42,9 @@ backdrop-filter: blur(10px);
     }
 
     .greeting {
+      background: rgba(0, 0, 0, 0.3);
       font-size: 2em;
+      font-weight: bold;
       margin: 20px 0;
       color: #fff;
       text-shadow: 1px 1px 4px #000;
